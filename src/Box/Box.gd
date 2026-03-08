@@ -49,8 +49,6 @@ func _exit_tree() -> void:
 	SimulationEvents.simulation_ended.disconnect(_on_simulation_ended)
 	SimulationEvents.simulation_set_paused.disconnect(_on_simulation_set_paused)
 	super._exit_tree()
-	if instanced:
-		queue_free()
 
 
 func _get_constrained_size(new_size: Vector3) -> Vector3:
@@ -103,9 +101,7 @@ func _on_simulation_started() -> void:
 
 
 func _on_simulation_ended() -> void:
-	if instanced:
-		queue_free()
-	else:
+	if not instanced:
 		_rigid_body_3d.top_level = false
 		_rigid_body_3d.transform = Transform3D.IDENTITY
 		_rigid_body_3d.linear_velocity = Vector3.ZERO

@@ -38,8 +38,6 @@ func _exit_tree() -> void:
 	SimulationEvents.simulation_started.disconnect(_on_simulation_started)
 	SimulationEvents.simulation_ended.disconnect(_on_simulation_ended)
 	SimulationEvents.simulation_set_paused.disconnect(_on_simulation_set_paused)
-	if instanced:
-		queue_free()
 
 func selected() -> void:
 	if _paused or not SimulationEvents.simulation_running:
@@ -68,9 +66,7 @@ func _on_simulation_started() -> void:
 	_enable_initial_transform = true
 
 func _on_simulation_ended() -> void:
-	if instanced:
-		queue_free()
-	else:
+	if not instanced:
 		_rigid_body.top_level = false
 		_rigid_body.transform = Transform3D.IDENTITY
 		_rigid_body.linear_velocity = Vector3.ZERO
